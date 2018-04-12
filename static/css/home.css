@@ -1,0 +1,158 @@
+/*
+ *	General tags
+*/
+html, body, h1 {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f4f4f4;
+  font-family: 'Open Sans', sans-serif;
+  height: 100%;
+}
+
+h2 {
+  font-weight: 300;
+  letter-spacing: -1.2px;
+}
+
+a {
+  text-decoration: none;
+  display: inline-block;
+}
+
+/*
+ *	Top bar
+*/
+
+.Top-bar {
+	width: 100%;
+  	margin: 0 auto;
+  	padding: 0;
+  	background-color:  rgb(135,206,250);
+  	height: 50px;
+  	position: relative;
+  	font-size: 20px;
+  	font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  	font-weight: 400;
+  	display: table;
+}
+
+.Title {
+	display: table-cell;
+	width: 50%;
+  	letter-spacing: 2.5px;
+  	font-size: 120%;
+  	text-transform: uppercase;
+  	text-align: center;
+  	padding-top: 0.5%;
+  	padding-bottom: 0.5%;
+  	padding-left: 16.5%;
+}
+
+.signed-in{
+  padding-left: 0%;
+}
+
+.top-btn {
+	display: table-cell;
+	width: 5%;
+  	letter-spacing: 2.5px;
+  	text-transform: uppercase;
+  	font-size:90%;
+  	text-align: center;
+  	padding-top: 0.5%;
+  	padding-bottom: 0.5%;
+  	padding-right: 0.5%;
+  	background-color: rgb(135,206,250);
+
+  border: none;
+  cursor: pointer;
+}
+
+.top-btn:hover, .top-btn:focus {
+  	background-color: rgb(0,191,255);	
+}
+
+ 
+/* The container <div> - needed to position the dropdown content */
+#dropbtn {    
+  display: table-cell;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    visibility: hidden;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+  display:block;
+  visibility: visible;
+} 
+
+/*
+ *	Main section
+*/
+
+.main-section {
+	position: all;
+	right: 40%;
+	left: 40%;
+	width: 50%;
+	padding-left:10%;
+	padding-right:10%;
+	padding-top: 2%;
+	padding-bottom: 2%;
+	background-color: #F0FFFF;
+	display: table;
+	margin: auto;
+	flex: 1 1 auto;
+}
+
+.section-container {
+	width: 70%;
+	left: 20%;
+	display: table-row;
+	height: 100%
+}
+
+.data-section {
+	position: relative;
+	display:table-cell;
+	padding-top: 0.5%;
+	font-size: 110%;
+  	font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  	margin: auto;	
+  	width: 50%;
+}
+
+#summary {
+	position: absolute;
+	text-align: left;
+	height: auto;
+	width: 90%;
+	top: 5%;
+	flex: 0 1 auto;
+}
+
+.img {
+	position: relative;
+}

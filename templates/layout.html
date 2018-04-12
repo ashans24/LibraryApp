@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="static/css/home.css" rel="stylesheet">
+		<link href="static/css/signup.css" rel="stylesheet">
+
+		 <script src="static/js/menu-dropdown.js"></script> 
+	</head>
+	<body>
+		<header>
+			<div class="Top-bar">
+
+				
+				{% if signin %}
+
+					<div onclick="showDropdown()" class="top-btn" id="dropbtn">
+						Menu
+					  <div id="myDropdown" class="dropdown-content">
+					    <a href="#">Link 1</a>
+					    <a href="#">Link 2</a>
+					    <a href="#">Link 3</a>
+					  </div>
+					</div> 
+
+					<div class="Title signed-in">Library Application</div>
+					
+					<a href="{{ url_for('logout') }}" class="top-btn"><div>Log out</div></a>
+				
+				{% else %}
+
+					<div class="Title">Library Application</div>
+					
+					<a href="{{ url_for('signup') }}" class="top-btn"><div>Sign up</div></a>
+					
+					<a href="{{ url_for('login') }}" class="top-btn"><div>Log in</div></a>
+				
+				{% endif %}
+			</div>
+		</header>
+
+		{% block content %}
+		{% endblock %}
+
+	</body>
+</html>
