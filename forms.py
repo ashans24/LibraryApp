@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Email, Length
 
 class SignupForm(FlaskForm):
@@ -14,6 +14,9 @@ class LoginForm(FlaskForm):
 	password = PasswordField('Password', validators=[DataRequired("Please enter your password")])
 	submit = SubmitField("Sign in")
 
-class AddressForm(FlaskForm):
-	address = StringField('Address', validators=[DataRequired("Please enter an address")])
-	submit = SubmitField("Search")
+class AddBookForm(FlaskForm):
+	isbn = IntegerField('ISBN Number', validators=[DataRequired("Please enter the isbn of the book")])
+	bookName = StringField('Book Name', validators=[DataRequired("Please enter the name of the book")])
+	authorName = StringField('Author Name', validators=[DataRequired("Please enter the name of the Author")])
+	coverImg = StringField('CoverImageName')
+	submit = SubmitField('Add book')

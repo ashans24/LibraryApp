@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link href="static/css/home.css" rel="stylesheet">
-		<link href="static/css/signup.css" rel="stylesheet">
+		<link href="static/css/layout.css" rel="stylesheet">
+		<link href="static/css/main.css" rel="stylesheet">
 
 		 <script src="static/js/menu-dropdown.js"></script> 
 	</head>
@@ -16,8 +16,8 @@
 					<div onclick="showDropdown()" class="top-btn" id="dropbtn">
 						Menu
 					  <div id="myDropdown" class="dropdown-content">
-					    <a href="#">Link 1</a>
-					    <a href="#">Link 2</a>
+					    <a href="{{ url_for('viewBooks') }}">View Books</a>
+					    <a href="{{ url_for('viewBooks') }}">Add Books</a>
 					    <a href="#">Link 3</a>
 					  </div>
 					</div> 
@@ -40,6 +40,12 @@
 
 		{% block content %}
 		{% endblock %}
+
+		<div class="bottom-bar">
+			<div class="bottom-div">
+				<img src="{{ url_for('static', filename='img/goodreads_logo.jpg') }}" alt="Goodreads Logo" class="logo"/>
+			</div>				
+		</div>
 
 	</body>
 </html>

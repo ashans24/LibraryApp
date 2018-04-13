@@ -5,57 +5,57 @@
 <main class = "main-section form-section">
 
 	<div class="form-container">
-		<h2>Create an account</h2>
+		<h2>Add a book</h2>
 
-		<form method="POST" action="/signup">
+		<form method="POST" action="/viewbooks">
 			{{ form.hidden_tag() }}
 
 			<div class="form-group">
-				{{ form.first_name.label }}
+				{{ form.isbn.label }}
 
-				{% if form.first_name.errors %}
-					{%for error in form.first_name.errors %}
+				{% if form.isbn.errors %}
+					{%for error in form.isbn.errors %}
 						<p class="error-message">{{ error }}</p>
 					{% endfor %}
 				{% endif %}
 
-				{{ form.first_name }}
+				{{ form.isbn }}
 			</div>
 
 			<div class="form-group">
-				{{ form.last_name.label }}
+				{{ form.bookName.label }}
 
-				{% if form.last_name.errors %}
-					{%for error in form.last_name.errors %}
+				{% if form.bookName.errors %}
+					{%for error in form.bookName.errors %}
 						<p class="error-message">{{ error }}</p>
 					{% endfor %}
 				{% endif %}
 
-				{{ form.last_name }}
+				{{ form.bookName }}
 			</div>
 
 			<div class="form-group">
-				{{ form.email.label }}
+				{{ form.authorName.label }}
 
-				{% if form.email.errors %}
-					{%for error in form.email.errors %}
+				{% if form.authorName.errors %}
+					{%for error in form.authorName.errors %}
 						<p class="error-message">{{ error }}</p>
 					{% endfor %}
 				{% endif %}
 
-				{{ form.email }}
+				{{ form.authorName }}
 			</div>
 
 			<div class="form-group">
-				{{ form.password.label }}
+				{{ form.coverImg.label }}
 
-				{% if form.password.errors %}
-					{%for error in form.password.errors %}
+				{% if form.coverImg.errors %}
+					{%for error in form.coverImg.errors %}
 						<p class="error-message">{{ error }}</p>
 					{% endfor %}
 				{% endif %}
 
-				{{ form.password }}
+				{{ form.coverImg }}
 			</div>
 
 			{{ form.submit(class="btn-primary") }}

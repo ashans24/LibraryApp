@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mongoengine import MongoEngine
-from models import User
-from forms import SignupForm, LoginForm
+from models import User, Books
+from forms import SignupForm, LoginForm, AddBookForm
 
 db = MongoEngine()
 
@@ -76,6 +76,23 @@ def login():
 def logout():
 	session.pop('email', None)
 	return redirect(url_for('home'))
+
+@app.route("/viewbooks", methods=["GET", "POST"])
+def viewBooks():
+	if 'email' not in session:
+		return redirect(url_for('home'))
+
+	addbookForm = AddBookForm()
+
+	if request.method == "POST":
+		if addbookForm.validate() == False:
+			return render_template("addbooks.html", signin=True, form=addbookForm)
+		else:
+			newBook = Books(addbookForm.isbn.data, addbookForm.bookName.data, addbookForm.authorName.data, addbookForm.coverImg.data)
+			newBook.query(addbookForm.bookName.data)
+			return redirect(url_for('home'))
+	else:
+		return render_template('addbooks.html',  signin=True, form=addbookForm)
 
 if __name__ == "__main__":
 	app.run(debug=True)
