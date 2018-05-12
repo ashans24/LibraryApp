@@ -1,0 +1,59 @@
+.book-list {
+  width: 100%;
+  left: 20%;
+  display: table;
+  height: 70%;
+  padding: 1% 4%;
+  overflow: scroll;
+}
+
+.image {
+  height: 90%;
+  width: 30%;
+  display: table-cell; 
+  padding: 2% 2%;
+}
+
+.book-cover {
+  height: 95%;
+  width: 100%;
+  padding: 0.5% 0.5%;
+}
+
+.book-details {
+  width: 100%;
+  display: table-row;
+  list-style-type: none;
+  padding: 2% 2%;
+}
+
+.bookinfo {
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: 100%;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 5% 5%;
+}
+
+.bookinfo:p {
+  position: absolute;
+  font-size: 30%;
+}
+
+.book-summary {
+  flex: 0 1 auto;
+}
+
+.search-data-container {
+  height: 20%;
+  width: 70%;
+  display: table-row;
+  margin: 4% 4%;
+}
+
+.page-numbers {
+  left: 95%;
+  display: table-row;
+  text-align: right;
+}

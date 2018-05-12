@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Email, Length
 
 class SignupForm(FlaskForm):
@@ -14,9 +14,9 @@ class LoginForm(FlaskForm):
 	password = PasswordField('Password', validators=[DataRequired("Please enter your password")])
 	submit = SubmitField("Sign in")
 
-class AddBookForm(FlaskForm):
-	isbn = IntegerField('ISBN Number', validators=[DataRequired("Please enter the isbn of the book")])
-	bookName = StringField('Book Name', validators=[DataRequired("Please enter the name of the book")])
-	authorName = StringField('Author Name', validators=[DataRequired("Please enter the name of the Author")])
-	coverImg = StringField('CoverImageName')
-	submit = SubmitField('Add book')
+class SearchBookForm(FlaskForm):
+	searchBook = StringField('Book name/Author name/ISBN', 
+		validators=[DataRequired("Please enter a search parameter to be used.")])
+	searchCriteria = SelectField('Author or Book or ISBN', choices=[('all', 'Author or Book or ISBN'), 
+		('books', 'Book Name'), ('author', 'Author Name'), ('isbn', 'ISBN')])
+	submit = SubmitField('Search')

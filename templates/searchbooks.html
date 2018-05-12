@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<main ng-app="bookListSearch" ng-controller="searchController" class="main-section form-section">
+
+	<div class="form-container">
+		<h2>Add a book</h2>
+
+		<form ng-submit="submit()" name="searchForm" ng-init="submitted=false">
+			<p> <span ng-show="(searchForm.searchParam.$dirty || submitted) && searchForm.searchParam.$error.required">
+      			Search parameter is required
+    		</span></p>
+			<p>Enter name of book: </p>
+			<input type="text" ng-model="searchParam" name="searchParam" ng-required="true" />
+			<input type="submit" id="submit" value="Search" />
+		</form>
+		
+	</div>
+
+	<div class="search-data-container" id="searchContainer">
+	</div>
+	
+	<div class="page-numbers"></div>
+
+	<div class="book-list" id="bookDataList">
+		
+	</div>
+	
+	<div class="page-numbers"></div>
+</main>
+
+{% endblock %}
