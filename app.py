@@ -93,27 +93,35 @@ def logout():
 
 
 # Search screen: Contains a single search 
-@app.route("/searchbooks", methods=["GET"])
-#@app.route("/searchbooks/<search_param>", methods=["GET", "POST"]) 
+@app.route("/searchbooks", methods=["GET", "POST"])
+# @app.route("/searchbooks/<search_param>", methods=["GET", "POST"]) 
 #@cache.cached(timeout=60)
 def searchBooks():
 	if 'email' not in session:
 		return redirect(url_for('login'))
 
 	searchbookForm = SearchBookForm()
+	if request.method == "POST":
 
-	return render_template('searchbooks.html',  signin=True, form=searchbookForm, search=False)
-		
-@app.route("/searchbooks/<search_param>/<page_num>", methods=["GET", "POST"]) 
-def showBooks(search_param, page_num):
+		searchParam = request.form["searchBook"].replace(' ', '+')
+
+		return redirect(url_for('showBooks', search_param=searchParam))
+		#return render_template('searchbooks.html', signin=True, form=SearchBookForm, search=False)
+	else:
+		return render_template('searchbooks.html',  signin=True, form=searchbookForm, search=False)
+
+@app.route("/searchbooks/<search_param>", methods=["GET"]) 		
+@app.route("/searchbooks/<search_param>/<page_num>", methods=["GET"]) 
+def showBooks(search_param, page_num=1):
 	if 'email' not in session:
 		return redirect(url_for('login'))
 
-	if request.method == "POST":
-		bookList = queryBooks(search_param)
-		print(bookList)
+	searchbookForm = SearchBookForm()
 
-		return bookList
+	bookList = queryBooks(search_param)
+	print(bookList)
+
+	return render_template('searchbooks.html', signin=True, form=searchbookForm, search=True, bookList=bookList)
 
 ##########################################################################################################################
 

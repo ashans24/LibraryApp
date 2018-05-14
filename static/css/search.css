@@ -8,7 +8,7 @@
 }
 
 .image {
-  height: 90%;
+  height: 60%;
   width: 30%;
   display: table-cell; 
   padding: 2% 2%;
@@ -42,6 +42,7 @@
 }
 
 .book-summary {
+  display: table-cell;
   flex: 0 1 auto;
 }
 

@@ -1,207 +1,146 @@
-var app = angular.module('bookListSearch', []);
+var response = $('#bookListData').data()['other'];
 
+console.log(response);
 
+// Search container rendering
+var searchContainer = document.getElementById('searchContainer');
 
-app.config(['$interpolateProvider', function($interpolateProvider)
-{
-	$interpolateProvider.startSymbol('{a')
-	$interpolateProvider.endSymbol('a}')
-}]);
+while (searchContainer.firstChild){
+	searchContainer.removeChild(searchContainer.firstChild);
+}
 
+var totalResultsNum = response["total-results"];
+var startResultsNum = response["results-start"];
+var endResultsNum = response["results-end"];
 
+console.log("Search container entered");
 
-app.factory('SearchCache', function() {    
-	var pageNumber = 1;
-	var submitbtnpress = true;
-	var searchString="";
+var divNode = document.createElement("DIV");
+divNode.className="results-data";
 
-	var submit = function() {
-		this.submitbtnpress = true;
-		this.searchString="";
-	};
+var totalResultsNode = document.createElement("P");
+var totalResultsText = document.createTextNode('The total results are: '+totalResultsNum);
+totalResultsNode.appendChild(totalResultsText);
+divNode.appendChild(totalResultsNode);
 
-	var pageChange = function() {
-		this.submitbtnpress = false;
-	};
+var startResultsNode = document.createElement("P");
+var startResultsText = document.createTextNode('Start results: '+startResultsNum);
+startResultsNode.appendChild(startResultsText);
+divNode.appendChild(startResultsNode);
 
-    var next = function() {
-        pageNumber = this.pageNumber + 1;
-    };
+var endResultsNode = document.createElement("P");
+var endResultsText = document.createTextNode('end results: '+endResultsNum);
+endResultsNode.appendChild(endResultsText);
+divNode.appendChild(endResultsNode);
 
-    var previous = function() {
-        pageNumber = this.pageNumber - 1;
-    };
+searchContainer.appendChild(divNode);
 
-    var reset = function() {
-        pageNumber = 1;
-        return pageNumber;
-    };
+var bookListContainer = document.getElementById('bookDataList');
 
-    var setSearchString = function(value){
-    	this.searchString = value;
-    };
+while (bookListContainer.firstChild){
+	bookListContainer.removeChild(bookListContainer.firstChild);
+}
 
-    return {
-        pageNumber: pageNumber,
-        nextPage: next,
-        prevPage: previous,
-        reset: reset,
+$.each(response['results']['work'], function() {
+	console.log(this['best_book']);
 
-        submitbtnpress: submitbtnpress,
-		submit: submit,
-		pageChange: pageChange,
+	var listEl = document.createElement("LI");
+	listEl.className ="book-details";
 
-		searchString: searchString,
-		setSearchString: setSearchString
-    };
+	var imageDiv = document.createElement("DIV");
+	imageDiv.className = "data-section image";
+
+	var coverImg = document.createElement("IMG");
+	coverImg.className = "book-cover";
+	coverImg.src = this['best_book']['image_url'];
+	if (coverImg.alt != null) coverImg.alt = this['best_book']['title'];
+
+	imageDiv.appendChild(coverImg);
+	listEl.appendChild(imageDiv);
+
+	var dataDiv = document.createElement("DIV");
+	dataDiv.className = "data-section bookinfo";
+
+	var bksmmary = document.createElement("DIV");
+	bksmmary.className = "book-summary";
+
+	var titleH = document.createElement("H4");
+	var titleLink = document.createElement("A");
+	titleLink.href = "#";
+	var titleString = document.createTextNode(this['best_book']['title']);
+	titleLink.appendChild(titleString);
+	titleH.appendChild(titleLink);
+	bksmmary.appendChild(titleH);
+
+	var authorData = document.createElement("P");
+	var authorText = document.createTextNode("Author: " + this['best_book']['author']['name']);
+	authorData.appendChild(authorText);
+
+	var ratingsData = document.createElement("P");
+	var ratingsText = document.createTextNode("Average Ratings: " + this["average_rating"]);
+	ratingsData.appendChild(ratingsText);
+
+	bksmmary.appendChild(authorData);
+	bksmmary.appendChild(ratingsData);
+
+	listEl.appendChild(bksmmary);
+
+	bookListContainer.appendChild(listEl);
+
 });
 
+// // Page Number rendering
 
+// angular.forEach(document.querySelectorAll('.page-numbers'), function(divElement) {
+// 	var pageNumberDiv = angular.element(divElement);
+// 	var numOfResults = totalResultsNum - endResultsNum;
 
-app.controller('searchController', ['$scope', '$http', 'SearchCache', 
-	function($scope, $http, SearchCache) {
+// 	pageNumberDiv.empty();
+
+// 	// Conditional statement that enables next and previous page rendering
+// 	if (startResultsNum == 1 && endResultsNum != totalResultsNum) {
+// 		// First page with more than 1 pages
+// 		pageNumberDiv.append(
+// 				'<button ng-click="next()">Next Page</button>'
+// 			);
+// 	}
+// 	else if (startResultsNum != 1) {
+// 		// Not the first page
+		
+// 		if(endResultsNum == totalResultsNum){
+// 			// The last page
+// 			pageNumberDiv.append(
+// 				'<p><button>Previous Page</button></p>'
+// 			);
+// 		}
+// 		else {
+// 			// All other pages
+// 			pageNumberDiv.append(
+// 				'<p><button ng-click="next()">Next Page</button></p>'
+// 				+'<p><button>Previous Page</button></p>'
+// 			);
+// 		}
+// 	}
+// });
+
+// // Book List rendering
+// var bookList = angular.element(document.querySelector('#bookDataList'));
+// bookList.empty();
+
+// angular.forEach(response.data["results"]["work"], function(bookDatas, key) {
 	
-		var pageNumber = SearchCache.reset();
-		var submitbtn = SearchCache.submitbtnpress;
-		var searchString = SearchCache.searchString;
-
-		$scope.submit = function() {
-			SearchCache.submit();
-			SearchCache.setSearchString($scope.searchParam.toLowerCase().replace(new RegExp(' ', 'g'), '+'));
-
-			console.log(SearchCache.submitbtnpress);
-			$scope.search();
-		}
-
-		function next(){
-			this.pageNumber = SearchCache.next();
-
-			SearchCache.pageChange();
-
-			console.log(this.pageNumber);
-			console.log(this.submitbtn);
-
-			$scope.search();
-		}
-
-		$scope.search = function(){
-			$scope.submitted=true;
-
-			if ($scope.searchParam){
-				console.log("Before check " + this.pageNumber);
-
-				if (SearchCache.submitbtnpress){
-					this.pageNumber = SearchCache.reset();
-				}
-				else {
-					this.pageNumber = SearchCache.pageNumber;
-				}
-
-				console.log("After check " + this.pageNumber);
-				console.log(SearchCache.submitbtnpress);
-
-				var searchParameter = SearchCache.searchString;
-
-				console.log(JSON.stringify(searchParameter));
-
-				$http.post('/searchbooks/' + searchParameter + '/' + this.pageNumber, {
-					headers: {
-	             		'Content-Type': 'application/json; charset=utf-8'
-	        		}
-				})
-					.then(function(response){
-
-						var totalResultsNum = response.data["total-results"];
-						var startResultsNum = response.data["results-start"];
-						var endResultsNum = response.data["results-end"];
-						
-						// Search container rendering
-						var searchContainer = angular.element(document.querySelector('#searchContainer'));
-						searchContainer.empty();
-
-						var searchHtml = '<div class="results-data"><p>The total results are: '+
-							totalResultsNum +'</p><p>Start results: '+
-							startResultsNum +'</p><p>End results: '+
-							endResultsNum +'</p></div>';
-
-						searchContainer.append(searchHtml);
-
-						// Page Number rendering
-
-						angular.forEach(document.querySelectorAll('.page-numbers'), function(divElement) {
-							var pageNumberDiv = angular.element(divElement);
-							var numOfResults = totalResultsNum - endResultsNum;
-
-							pageNumberDiv.empty();
-
-							// Conditional statement that enables next and previous page rendering
-							if (startResultsNum == 1 && endResultsNum != totalResultsNum) {
-								// First page with more than 1 pages
-								pageNumberDiv.append(
-										'<p><button ng-click="next()">Next Page</button></p>'
-									);
-							}
-							else if (startResultsNum != 1) {
-								// Not the first page
-								
-								if(endResultsNum == totalResultsNum){
-									// The last page
-									pageNumberDiv.append(
-										'<p><button>Previous Page</button></p>'
-									);
-								}
-								else {
-									// All other pages
-									pageNumberDiv.append(
-										'<p><button ng-click="next()">Next Page</button></p>'
-										+'<p><button>Previous Page</button></p>'
-									);
-								}
-							}
-						});
-						
-						// Book List rendering
-						var bookList = angular.element(document.querySelector('#bookDataList'));
-						bookList.empty();
-
-						angular.forEach(response.data["results"]["work"], function(bookDatas, key) {
-							
-							var bookHtml = '<li class="book-details">'
-								+'<div class="data-section image">' 
-								+'<img class="book-cover" src="'+ bookDatas["best_book"]["image_url"] + '" alt="'
-								+ bookDatas["best_book"]["title"] + '" />'
-								+'</div>'
-								+'<div class="data-section bookinfo"><div class="book-summary">'//bookinfo 
-						        +'<h4><a href="#">' + bookDatas["best_book"]["title"] + '</a></h4>'
-						        +'<p>Author: ' + bookDatas["best_book"]["author"]["name"] + '</p>'
-						        +'<p>Average ratings: ' + bookDatas["average_rating"] + '</p>'
-								+'</div></div></li>';
+// 	var bookHtml = '<li class="book-details">'
+// 		+'<div class="data-section image">' 
+// 		+'<img class="book-cover" src="'+ bookDatas["best_book"]["image_url"] + '" alt="'
+// 		+ bookDatas["best_book"]["title"] + '" />'
+// 		+'</div>'
+// 		+'<div class="data-section bookinfo"><div class="book-summary">'//bookinfo 
+//         +'<h4><a href="#">' + bookDatas["best_book"]["title"] + '</a></h4>'
+//         +'<p>Author: ' + bookDatas["best_book"]["author"]["name"] + '</p>'
+//         +'<p>Average ratings: ' + bookDatas["average_rating"] + '</p>'
+// 		+'</div></div></li>';
 
 
-							bookList.append(bookHtml);
+// 	bookList.append(bookHtml);
 
-						});
-						
-					});
-			}
-		}
-
-	}
-]);
-
-// <div class="book-list">
-//     <li class="book-details">
-//       <div class="image">
-//         <a href="/isbn/9780316246279"><img src="https://images-na.ssl-images-amazon.com/images/I/515zOsxnpQL._SL160_.jpg" alt="The Black Prism (Lightbringer)"></a>
-//       </div>
-//       <div class="bookinfo">
-//         <h2><a href="/isbn/9780316246279">The Black Prism (Lightbringer)</a></h2>    
-//                   <p>Author: Brent Weeks</p>
-       
-//         <p>ISBN-13: 9780316246279</p>
-//                   <p>ISBN-10: 0316246271</p>
-//                   <a class="btn view" href="/isbn/9780316246279">View This Book ›</a>
-//         <p class="clear"></p>
-//       </div>
-//     </li>
-// </div>		
+// });
